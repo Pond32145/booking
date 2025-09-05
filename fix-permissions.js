@@ -38,10 +38,15 @@ function fixPermissions() {
     console.log('node_modules/.bin directory not found');
   }
   
-  // Also try to fix permissions for TypeScript specifically
+  // Also try to fix permissions for TypeScript and Vite specifically
   const tscPath = path.join(__dirname, 'node_modules', 'typescript', 'bin', 'tsc');
   if (fs.existsSync(tscPath)) {
     makeExecutable(tscPath);
+  }
+  
+  const vitePath = path.join(__dirname, 'node_modules', 'vite', 'bin', 'vite.js');
+  if (fs.existsSync(vitePath)) {
+    makeExecutable(vitePath);
   }
   
   console.log('Permission fix attempt completed');

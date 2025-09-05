@@ -15,5 +15,5 @@
       "dest": "/index.html"
     }
   ],
-  "buildCommand": "./vercel-build.sh"
+  "buildCommand": "bash vercel-build.sh"
 }

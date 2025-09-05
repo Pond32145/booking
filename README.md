@@ -15,12 +15,18 @@ npm run dev
 npm run build
 ```
 
+Note: If you encounter minification errors during build, ensure Terser is installed:
+```bash
+npm install --save-dev terser
+```
+
 ## Available Scripts
 
 - `npm run dev` - Start development server with HMR
-- `npm run build` - Build for production (Vite only)
+- `npm run build` - Build for production (using npx for Vite)
 - `npm run build:types` - Build with TypeScript type checking
-- `npm run build:fallback` - Fallback build using npx for tsc
+- `npm run build:fallback` - Fallback build using npx for tsc and Vite
+- `npm run build:direct` - Direct node execution of Vite build
 - `npm run fix:perms` - Fix common permission issues
 - `npm run lint` - Run ESLint
 - `npm run preview` - Preview production build locally
@@ -36,12 +42,17 @@ If you encounter a "Permission denied" error when building:
    npm run build:fallback
    ```
 
-2. Fix permissions manually:
+2. Try direct node execution:
+   ```bash
+   npm run build:direct
+   ```
+
+3. Fix permissions manually:
    ```bash
    npm run fix:perms
    ```
 
-3. For Vercel deployments, use the vercel-build.sh script
+4. For Vercel deployments, use the vercel-build.sh script
 
 ### Deployment to Vercel
 

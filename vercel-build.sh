@@ -20,8 +20,8 @@ if [ -f "fix-permissions.js" ]; then
 fi
 
 # Try different build approaches
-echo "Attempting to build with vite build..."
-if npm run build; then
+echo "Attempting to build with npx vite build..."
+if npx vite build; then
   echo "Build successful!"
   exit 0
 fi
@@ -29,6 +29,12 @@ fi
 echo "Primary build failed, trying fallback build..."
 if npm run build:fallback; then
   echo "Fallback build successful!"
+  exit 0
+fi
+
+echo "Fallback build failed, trying direct node execution..."
+if npm run build:direct; then
+  echo "Direct build successful!"
   exit 0
 fi
 
