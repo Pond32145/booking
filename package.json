@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noCheck && vite build",
+    "build": "vite build",
+    "build:types": "tsc --noCheck && vite build",
+    "build:fallback": "npx tsc --noCheck && vite build",
+    "fix:perms": "node fix-permissions.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
