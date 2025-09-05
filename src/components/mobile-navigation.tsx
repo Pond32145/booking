@@ -41,7 +41,7 @@ export const MobileNavigation: React.FC = () => {
 
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-content1/90 backdrop-blur-xl shadow-2xl border-t border-slate-200/50 dark:border-slate-700/50 z-50">
-      <div className="flex justify-around items-center h-16 px-2">
+      <div className="flex justify-around items-center h-14 px-2 my-1.5">
         {navItems.map((item) => (
           <button
             key={item.path}

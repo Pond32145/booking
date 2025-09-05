@@ -2,7 +2,7 @@
 export const thTranslations = {
   // Navigation
   home: 'หน้าแรก',
-  myBookings: 'การจองของฉัน',
+  myBookings: 'การจอง',
   support: 'ช่วยเหลือ',
   profile: 'โปรไฟล์',
   

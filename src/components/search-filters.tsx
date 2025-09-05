@@ -38,7 +38,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   };
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full md:w-1/2 items-center justify-center ${className}`}>
       <div className="relative">
         <div className="premium-card p-0.5 md:p-1 bg-white/90 dark:bg-content1/90 backdrop-blur-xl">
           <Input

@@ -229,13 +229,6 @@ export const VenueDetailsPage: React.FC = () => {
                             
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                {/* <div className="flex items-center gap-1">
-                                  <Icon icon="lucide:clock" width={14} height={14} className="text-default-400" />
-                                  <span className="text-small text-default-500">{service.duration} {t.minutes}</span>
-                                </div>
-                                <div className="font-semibold text-large text-primary-600 dark:text-primary-400">
-                                  ฿{service.price.toFixed(0)}
-                                </div> */}
                               </div>
                               
                               <Button

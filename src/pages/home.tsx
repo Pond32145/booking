@@ -219,7 +219,9 @@ export const HomePage: React.FC = () => {
         </motion.div>
       </div>
       
+      <div className="flex justify-center"> 
       <SearchFilters onSearch={handleSearch} onFilterChange={handleFilterChange} />
+      </div>
       
       {/* Quick Filter Chips */}
       <div className="mt-4 md:mt-6">
