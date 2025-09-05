@@ -6,6 +6,12 @@ const path = require('path');
 // Function to make a file executable
 function makeExecutable(filePath) {
   try {
+    // Check if file exists first
+    if (!fs.existsSync(filePath)) {
+      console.log(`File not found: ${filePath}`);
+      return;
+    }
+    
     fs.chmodSync(filePath, 0o755);
     console.log(`Made ${filePath} executable`);
   } catch (error) {
@@ -47,6 +53,12 @@ function fixPermissions() {
   const vitePath = path.join(__dirname, 'node_modules', 'vite', 'bin', 'vite.js');
   if (fs.existsSync(vitePath)) {
     makeExecutable(vitePath);
+  }
+  
+  // Try to fix permissions for the vite binary in .bin directory
+  const viteBinPath = path.join(__dirname, 'node_modules', '.bin', 'vite');
+  if (fs.existsSync(viteBinPath)) {
+    makeExecutable(viteBinPath);
   }
   
   console.log('Permission fix attempt completed');

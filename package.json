@@ -9,7 +9,7 @@
     "build:types": "tsc --noCheck && vite build",
     "build:fallback": "npx tsc --noCheck && vite build",
     "build:direct": "node node_modules/vite/bin/vite.js build",
-    "fix:perms": "node fix-permissions.js",
+    "fix:perms": "node fix-permissions.cjs",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

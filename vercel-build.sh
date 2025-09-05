@@ -13,10 +13,16 @@ if [ ! -d "node_modules" ]; then
   npm ci
 fi
 
+# Install terser if not present
+if ! npm list terser >/dev/null 2>&1; then
+  echo "Installing terser..."
+  npm install --save-dev terser
+fi
+
 # Fix permissions if needed
 if [ -f "fix-permissions.js" ]; then
   echo "Fixing permissions..."
-  node fix-permissions.js
+  node fix-permissions.cjs
 fi
 
 # Try different build approaches

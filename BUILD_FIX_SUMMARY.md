@@ -25,7 +25,7 @@ Added multiple fallback options for different environments:
 ```
 
 ### 3. Enhanced Permission Fix Script
-Updated the Node.js script (`fix-permissions.js`) to fix permissions for both TypeScript and Vite binaries.
+Updated the Node.js script (`fix-permissions.cjs`) to fix permissions for both TypeScript and Vite binaries.
 
 ### 4. Added Missing Dependency
 Installed Terser as a dev dependency to resolve the minification issue:
