@@ -27,7 +27,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       shadow="none"
     >
       <CardBody className="flex flex-col items-center justify-center p-3 md:p-5">
-        <div className={`rounded-xl md:rounded-2xl p-2.5 md:p-4 mb-2 md:mb-3 transition-all duration-300 ${
+        <div className={`rounded-lg md:rounded-lg p-2.5 md:p-4 mb-2 md:mb-3 transition-all duration-300 ${
           isSelected 
             ? 'bg-slate-100 dark:bg-slate-800' 
             : 'bg-slate-100 dark:bg-slate-800 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30'

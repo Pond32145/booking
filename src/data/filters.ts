@@ -21,7 +21,5 @@ export const filterOptions: FilterOption[] = [
 // Sort options for search page
 export const sortOptions: SortOption[] = [
   { id: 'recommended', label: 'แนะนำ' },
-  { id: 'price_low', label: 'ราคาต่ำ-สูง' },
-  { id: 'price_high', label: 'ราคาสูง-ต่ำ' },
-  { id: 'rating', label: 'คะแนนสูงสุด' },
+  { id: 'distance', label: 'ระยะทาง' },
 ];

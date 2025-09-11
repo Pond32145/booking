@@ -40,14 +40,14 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   return (
     <div className={`w-full md:w-1/2 items-center justify-center ${className}`}>
       <div className="relative">
-        <div className="premium-card p-0.5 md:p-1 bg-white/90 dark:bg-content1/90 backdrop-blur-xl">
+        <div className="premium-card p-0.5  bg-white/90 dark:bg-content1/90 backdrop-blur-xl">
           <Input
             placeholder={placeholder || t.searchPlaceholder}
             value={searchQuery}
             onValueChange={setSearchQuery}
             onKeyPress={handleKeyPress}
             startContent={
-              <div className="flex items-center gap-2 pl-2">
+              <div className="flex items-center gap-1 pl-1">
                 <Icon icon="lucide:search" className="text-slate-400" width={14} height={14} />
               </div>
             }
@@ -58,14 +58,14 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 color="primary"
                 onPress={handleSearch}
                 className="bg-gradient-primary button-glow interactive-scale mr-0.5 md:mr-1"
-                radius="lg"
+                radius="md"
               >
                 <Icon icon="lucide:search" width={15} height={15} />
               </Button>
             }
             className="w-full"
-            radius="lg"
-            variant="flat"
+            radius="md"
+            variant="bordered"
             size="md"
             classNames={{
               inputWrapper: "bg-transparent border-0 shadow-none h-8 md:h-10",

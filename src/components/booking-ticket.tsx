@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardBody, CardFooter, Button, Divider } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/language-context';
 
 interface BookingTicketProps {
@@ -28,12 +27,7 @@ export const BookingTicket: React.FC<BookingTicketProps> = ({
   const { t } = useLanguage();
   
   return (
-    <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="max-w-md mx-auto"
-    >
+    <div className="max-w-md mx-auto">
       <Card className="overflow-hidden border-2 border-dashed border-primary-300 dark:border-primary-700">
         <div className="bg-primary-500 text-white py-3 px-4 text-center">
           <h2 className="text-xl font-bold">{t.bookingConfirmed}</h2>
@@ -109,6 +103,6 @@ export const BookingTicket: React.FC<BookingTicketProps> = ({
           </Button>
         </CardFooter>
       </Card>
-    </motion.div>
+    </div>
   );
 };

@@ -1,14 +1,14 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import { Card, CardBody, Chip, Button, Divider, Pagination, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownSection } from "@heroui/react";
+import { useHistory, useLocation } from 'react-router-dom';
+import { Input, Button, Tabs, Tab, Pagination, Chip, Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Skeleton } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
-import { SearchFilters } from '../components/search-filters';
+import { MotionDiv, MotionH1, MotionP } from '../components/motion';
 import { BookingSlotCard } from '../components/booking-slot-card';
+import { BookingSlotCardSkeleton } from '../components/skeleton';
+import { SearchFilters } from '../components/search-filters';
 import { useLanguage } from '../contexts/language-context';
 import { searchResultsVenues } from '../data/venues';
 import { filterOptions, sortOptions } from '../data/filters';
-import { VenueCardSkeleton, Skeleton } from '../components/skeleton';
 
 export const SearchResultsPage: React.FC = () => {
   const location = useLocation();
@@ -43,9 +43,6 @@ export const SearchResultsPage: React.FC = () => {
     }, 800);
     return () => clearTimeout(timer);
   }, []);
-  
-  // Mock search results with better filtering logic
-  const searchResults = searchResultsVenues;
   
   const handleSearch = (newQuery: string) => {
     setSearchQuery(newQuery);
@@ -94,7 +91,7 @@ export const SearchResultsPage: React.FC = () => {
   
   // Enhanced filtering logic
   const filteredResults = React.useMemo(() => {
-    let results = searchResults;
+    let results = searchResultsVenues;
     
     // Text search filtering
     if (searchQuery.trim()) {
@@ -139,21 +136,20 @@ export const SearchResultsPage: React.FC = () => {
     }
     
     return results;
-  }, [searchResults, searchQuery, activeFilters]);
+  }, [searchResultsVenues, searchQuery, activeFilters]);
   
   // Enhanced sorting logic
   const sortedResults = React.useMemo(() => {
     const results = [...filteredResults];
     
     switch (sortBy) {
-      case 'price_low':
-        return results.sort((a, b) => a.price - b.price);
-      case 'price_high':
-        return results.sort((a, b) => b.price - a.price);
-      case 'rating':
-        return results.sort((a, b) => b.rating - a.rating);
-      case 'name':
-        return results.sort((a, b) => a.name.localeCompare(b.name));
+      case 'distance':
+        // Sort by distance (closest first)
+        return results.sort((a, b) => {
+          const distanceA = a.distance || 0;
+          const distanceB = b.distance || 0;
+          return distanceA - distanceB;
+        });
       case 'recommended':
       default:
         // Sort by a combination of rating and popularity
@@ -190,7 +186,7 @@ export const SearchResultsPage: React.FC = () => {
         onSearch={handleSearch} 
         onFilterChange={handleFilterChange}
         placeholder="Search venues, services..."
-        className="mb-6"
+        className="mb-3"
       />
       
       {/* Search Results Header */}
@@ -198,37 +194,31 @@ export const SearchResultsPage: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-                {searchQuery ? `Search results for "${searchQuery}"` : t.searchResults}
-              </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm">
-                {sortedResults.length} {t.resultsFound}
-                {activeFilters.length > 0 && ` with ${activeFilters.length} filter${activeFilters.length > 1 ? 's' : ''} applied`}
-              </p>
             </div>
           </div>
         </div>
       )}
       </div>
 
-      <div className="mt-6">
+      <div className="">
         {isLoading ? (
-          <div className="flex items-center justify-between mb-6">
-            <Skeleton className="h-10 w-32" />
-            <Skeleton className="h-10 w-24" />
+          <div className="flex items-center justify-between mb-1">
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-8 w-20" />
           </div>
         ) : (
-          <div className="flex items-center justify-end mb-6 gap-2">
+          <div className="flex items-center justify-between mb-3 gap-2">
             {/* Filter Dropdown */}
             <Dropdown>
               <DropdownTrigger>
                 <Button 
                   variant="bordered" 
-                  endContent={<Icon icon="lucide:chevron-down" width={16} height={16} />}
-                  className="min-w-fit"
+                  size="sm"
+                  endContent={<Icon icon="lucide:chevron-down" width={12} height={12} />}
+                  className="w-full"
                 >
-                  <Icon icon="lucide:filter" width={16} height={16} className="mr-2" />
-                  {t.filters}
+                  <Icon icon="lucide:filter" width={12} height={12} className="mr-2" />
+                  <span className="text-xs">{t.filters}</span>
                   {activeFilters.length > 0 && (
                     <Chip size="sm" color="primary" className="ml-2">
                       {activeFilters.length}
@@ -262,11 +252,12 @@ export const SearchResultsPage: React.FC = () => {
               <DropdownTrigger>
                 <Button 
                   variant="bordered"
-                  endContent={<Icon icon="lucide:chevron-down" width={16} height={16} />}
-                  className="min-w-fit"
+                  size="sm"
+                  endContent={<Icon icon="lucide:chevron-down" width={12} height={12} />}
+                  className="w-full"
                 >
-                  <Icon icon="lucide:arrow-up-down" width={16} height={16} className="mr-2" />
-                  {sortOptions.find(option => option.id === sortBy)?.label || t.sortBy}
+                  <Icon icon="lucide:arrow-up-down" width={12} height={12} className="mr-2" />
+                  <span className="text-xs">{sortOptions.find(option => option.id === sortBy)?.label || t.sortBy}</span>
                 </Button>
               </DropdownTrigger>
               <DropdownMenu 
@@ -290,7 +281,7 @@ export const SearchResultsPage: React.FC = () => {
             </Dropdown>
           </div>
         )}
-        
+
         {/* Active Filters Display */}
         {!isLoading && activeFilters.length > 0 && (
           <div className="mb-4">
@@ -325,21 +316,18 @@ export const SearchResultsPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, index) => (
-              <VenueCardSkeleton key={index} />
+              <BookingSlotCardSkeleton key={index} />
             ))
           ) : (
-            sortedResults.map((result, index) => (
-              <motion.div
+            sortedResults.map((result) => (
+              <div
                 key={result.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
               >
                 <BookingSlotCard
                   {...result}
                   onBook={handleBookVenue}
                 />
-              </motion.div>
+              </div>
             ))
           )}
         </div>

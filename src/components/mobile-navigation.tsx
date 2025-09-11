@@ -54,7 +54,7 @@ export const MobileNavigation: React.FC = () => {
             } ${isNavigating ? 'opacity-50' : ''}`}
           >
             <div className={`transition-all duration-300 ${
-              isActive(item.path) ? 'animate-float' : ''
+              isActive(item.path) ? 'scale-110' : ''
             }`}>
               <Icon 
                 icon={item.icon} 

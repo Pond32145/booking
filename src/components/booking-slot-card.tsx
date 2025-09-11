@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardBody, CardFooter, Button, Chip } from "@heroui/react";
+import { Card, CardBody, Button, Chip, Divider } from "@heroui/react";
 import { Icon } from '@iconify/react';
+import { MotionDiv } from '../components/motion';
 import { useAuth } from '../contexts/auth-context';
 import { LoginModal } from './login-modal';
 import { useLanguage } from '../contexts/language-context';
@@ -15,6 +16,9 @@ interface BookingSlotProps {
   rating: number;
   image: string;
   available: boolean;
+  distance?: number; // Distance in kilometers
+  isOpen?: boolean; // Opening status
+  openingHours?: string; // Opening hours
   onBook: (id: string) => void;
   hideDetails?: boolean; // New prop to hide date/time/price
 }
@@ -29,112 +33,136 @@ export const BookingSlotCard: React.FC<BookingSlotProps> = ({
   rating,
   image,
   available,
+  distance,
+  isOpen,
+  openingHours,
   onBook,
   hideDetails = false // Default to showing details
 }) => {
-  const { isAuthenticated } = useAuth();
-  const [loginModalOpen, setLoginModalOpen] = React.useState(false);
   const [isBookingLoading, setIsBookingLoading] = React.useState(false);
   const { t } = useLanguage();
 
   const handleBookClick = async () => {
-    if (isAuthenticated) {
-      setIsBookingLoading(true);
-      try {
-        await onBook(id);
-      } finally {
-        setIsBookingLoading(false);
-      }
-    } else {
-      setLoginModalOpen(true);
+    setIsBookingLoading(true);
+    try {
+      await onBook(id);
+    } finally {
+      setIsBookingLoading(false);
     }
   };
 
+  // Default values for new properties
+  const displayDistance = distance !== undefined ? distance : Math.floor(Math.random() * 10) + 1;
+  const displayIsOpen = isOpen !== undefined ? isOpen : Math.random() > 0.5;
+  const displayOpeningHours = openingHours || '10:00 - 22:00 น.';
+
   return (
-    <Card 
-      shadow="none" 
-      className="w-full professional-card overflow-hidden group hover:shadow-xl transition-all duration-500 cursor-pointer focus-within:ring-2 focus-within:ring-primary-500/50 focus-within:ring-offset-2"
-      role="article"
-      aria-label={`${name} booking slot at ${location}`}
+    <MotionDiv
+      whileHover={{
+        y: -2,
+        transition: { duration: 0.2 }
+      }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 300 }}
     >
-      <CardBody className="flex p-4 md:p-6">
-        {/* Image on the left */}
-        <div className="w-48 h-32 md:h-48 flex-shrink-0">
-          <img
-            src={image}
-            alt={`${name} venue image`}
-            className="w-full h-full object-cover rounded-lg"
-            loading="lazy"
-          />
-        </div>
-        {/* Details on the right */}
-        <div className="flex flex-col justify-between flex-1 ml-4">
-          <div>
-            <div className="flex items-center mb-2">
-              <div className="text-yellow-500 mr-1">⭐</div>
-              <span className="text-sm font-semibold text-white">{rating}</span>
-            </div>
-            <h3 className="text-lg font-bold text-white mb-1">{name}</h3>
-            <p className="text-sm text-gray-300">
-              <Icon icon="lucide:map-pin" className="mr-1" />
-              {location}
-            </p>
-          </div>
-          <div>
-            {!hideDetails && (
-              <div className="flex items-center">
-                <div className="flex items-center mr-4">
-                  <Icon icon="lucide:calendar" className="mr-1" />
-                  <span className="text-sm text-gray-300">{date}</span>
+      <Card
+        shadow="sm"
+        className="w-full bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors duration-200 overflow-hidden"
+        role="article"
+        aria-label={`${name} booking slot at ${location}`}
+        onPress={handleBookClick}
+        isPressable
+      >
+        <div className="flex flex-col ">
+          {/* Image - Larger on desktop */}
+          <MotionDiv
+            className="w-full  h-48 md:h-auto flex-shrink-0"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <img
+              src={image}
+              alt={`${name} venue image`}
+              className="object-cover w-full h-full rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
+              loading="lazy"
+            />
+          </MotionDiv>
+
+          {/* Content */}
+          <div className="flex flex-col justify-between w-full">
+            <CardBody className="p-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <MotionDiv
+                    className="text-lg font-bold tracking-tight text-gray-900 dark:text-white mb-1"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {name}
+                  </MotionDiv>
+                  <div className="  items-center  gap-1 text-default-600 dark:text-default-400">
+                    <div className='flex items-center gap-1 mt-1'>
+                      <Icon icon="lucide:map-pin" width={14} height={14} />
+                      <span className="text-xs"> {displayDistance} กม.</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Icon icon="lucide:clock" className="mr-1" />
-                  <span className="text-sm text-gray-300">{time}</span>
+
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="relative">
+                    <div className={`w-2 h-2 rounded-full ${displayIsOpen ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                    <div className={`absolute inset-0 w-2 h-2 rounded-full ${displayIsOpen ? 'bg-green-500 animate-ping' : 'bg-red-500'}`}></div>
+                  </div>
+                  <span className="text-xs font-medium">
+                    {displayIsOpen ? 'เปิดอยู่' : 'ปิดแล้ว'}
+                  </span>
                 </div>
               </div>
-            )}
+
+
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="  items-center  gap-1 text-default-600 dark:text-default-400">
+                    <div className="flex items-center gap-1 mt-1">
+                      <span className="text-xs text-default-500">
+                       เวลาให้บริการ {displayOpeningHours}
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* <MotionDiv
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  <Button
+                    color="primary"
+                    size="md"
+                    onPress={handleBookClick}
+                    isDisabled={!available}
+                    isLoading={isBookingLoading}
+                    className="font-medium px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-sm transition-colors duration-200 text-sm min-w-[100px]"
+                    aria-label={available ? `Book ${name} now` : `${name} is unavailable`}
+                  >
+                    {isBookingLoading ? (
+                      <>
+                        <Icon icon="lucide:loader-2" className="animate-spin mr-2" width={16} height={16} />
+                        {t.bookNow}
+                      </>
+                    ) : (
+                      available ? t.bookNow : t.unavailable
+                    )}
+                  </Button>
+                </MotionDiv> */}
+              </div>
+            </CardBody>
           </div>
         </div>
-      </CardBody>
-      <CardFooter className="flex justify-between items-center bg-gradient-to-r from-slate-50/80 to-slate-100/80 dark:from-slate-800/40 dark:to-slate-700/40 backdrop-blur-md border-t border-slate-200/50 dark:border-slate-700/50 py-4 md:py-5 px-4 md:px-6">
-        {/* Only show price if hideDetails is false */}
-        {!hideDetails ? (
-          <div className="flex flex-col">
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide font-medium">{t.price}</p>
-            <div className="flex items-baseline gap-1">
-              <span className="text-xl md:text-2xl font-bold gradient-text-primary">฿{price.toLocaleString()}</span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">/slot</span>
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <div className="absolute inset-0 w-2 h-2 bg-green-400 rounded-full animate-ping opacity-75"></div>
-            </div>
-            <span className="text-sm font-medium text-green-600 dark:text-green-400">Available Now</span>
-          </div>
-        )}
-        <Button
-          color="primary"
-          size="md"
-          onPress={handleBookClick}
-          isDisabled={!available}
-          isLoading={isBookingLoading}
-          className="font-semibold px-6 md:px-8 py-2.5 md:py-3 bg-gradient-primary button-glow interactive-scale shadow-lg hover:shadow-xl focus:ring-2 focus:ring-primary-500/50 focus:ring-offset-2 transition-all duration-300 text-sm md:text-base min-h-[44px] min-w-[120px]"
-          radius="full"
-          aria-label={available ? (isAuthenticated ? `Book ${name} now` : `Login to book ${name}`) : `${name} is unavailable`}
-        >
-          {isBookingLoading ? (
-            <>
-              <Icon icon="lucide:loader-2" className="animate-spin mr-2" width={16} height={16} />
-              Booking...
-            </>
-          ) : (
-            available ? (isAuthenticated ? t.bookNow : t.loginToBook) : t.unavailable
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
+      </Card>
+    </MotionDiv>
   );
 };

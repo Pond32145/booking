@@ -20,7 +20,7 @@ export const thTranslations = {
   categories: 'หมวดหมู่',
   recommended: 'แนะนำ',
   popular: 'ยอดนิยม',
-  nearby: 'ใกล้เคียง',
+  nearby: 'บริการใกล้ฉัน',
   specialPromotions: 'โปรโมชั่นพิเศษ',
   viewAll: 'ดูทั้งหมด',
   recentlyViewed: 'เพิ่งดู',

@@ -1,12 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Tabs, Tab, Divider, addToast, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@heroui/react";
+import { Tabs, Tab, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Pagination, useDisclosure, addToast } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
 import { BookingHistoryCard } from '../components/booking-history-card';
-import { useLanguage } from '../contexts/language-context';
-import { upcomingBookings, pastBookings } from '../data/bookings';
 import { BookingCardSkeleton } from '../components/skeleton';
+import { useLanguage } from '../contexts/language-context';
+import { getUpcomingBookings, getPastBookings, cancelBooking } from '../data/bookings';
 
 export const MyBookingsPage: React.FC = () => {
   const history = useHistory();
@@ -14,6 +13,9 @@ export const MyBookingsPage: React.FC = () => {
   const [selectedBookingId, setSelectedBookingId] = React.useState<string | null>(null);
   const [cancelReason, setCancelReason] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState(true);
+  const [upcomingBookingsData, setUpcomingBookingsData] = React.useState([]);
+  const [pastBookingsData, setPastBookingsData] = React.useState([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const { t } = useLanguage();
   
   // Simulate loading
@@ -24,8 +26,15 @@ export const MyBookingsPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  const upcomingBookingsData = upcomingBookings;
-  const pastBookingsData = pastBookings;
+  React.useEffect(() => {
+    const fetchBookings = async () => {
+      const upcoming = await getUpcomingBookings();
+      const past = await getPastBookings();
+      setUpcomingBookingsData(upcoming);
+      setPastBookingsData(past);
+    };
+    fetchBookings();
+  }, []);
   
   const handleReschedule = (id: string) => {
     addToast({
@@ -40,8 +49,9 @@ export const MyBookingsPage: React.FC = () => {
     onOpen();
   };
   
-  const confirmCancellation = () => {
+  const confirmCancellation = async () => {
     if (selectedBookingId) {
+      await cancelBooking(selectedBookingId, cancelReason);
       addToast({
         title: t.bookingCanceled,
         description: t.bookingCanceledSuccess,
@@ -83,19 +93,16 @@ export const MyBookingsPage: React.FC = () => {
                 <BookingCardSkeleton key={index} />
               ))
             ) : upcomingBookingsData.length > 0 ? (
-              upcomingBookingsData.map((booking, index) => (
-                <motion.div
+              upcomingBookingsData.map((booking) => (
+                <div
                   key={booking.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
                   <BookingHistoryCard
                     {...booking}
                     onReschedule={handleReschedule}
                     onCancel={handleCancel}
                   />
-                </motion.div>
+                </div>
               ))
             ) : (
               <div className="p-8 text-center">
@@ -123,19 +130,16 @@ export const MyBookingsPage: React.FC = () => {
                 <BookingCardSkeleton key={index} />
               ))
             ) : (
-              pastBookingsData.map((booking, index) => (
-                <motion.div
+              pastBookingsData.map((booking) => (
+                <div
                   key={booking.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
                   <BookingHistoryCard
                     {...booking}
                     onReschedule={handleReschedule}
                     onCancel={handleCancel}
                   />
-                </motion.div>
+                </div>
               ))
             )}
           </div>

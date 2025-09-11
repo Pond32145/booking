@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionH1, MotionP } from '../components/motion';
 import { CategoryCard } from '../components/category-card';
 import { useLanguage } from '../contexts/language-context';
 import { getCategories } from '../data/categories';
@@ -32,9 +32,14 @@ export const CategoriesPage: React.FC = () => {
   };
 
   return (
-    <div className="pb-20 md:pb-0">
+    <div className="pb-20 md:pb-0 ">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <MotionDiv 
+        className="flex items-center gap-4 mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
         <Button
           variant="light"
           isIconOnly
@@ -44,23 +49,43 @@ export const CategoriesPage: React.FC = () => {
           aria-label={t.back}
         />
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-slate-100">
+          <MotionH1 
+            className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-slate-100"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
             {t.categories}
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base">
+          </MotionH1>
+          <MotionP 
+            className="text-slate-600 dark:text-slate-400 text-sm md:text-base"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
             Choose a category to explore available services
-          </p>
+          </MotionP>
         </div>
-      </div>
+      </MotionDiv>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+      <MotionDiv 
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.3 }}
+      >
         {categories.map((category, index) => (
-          <motion.div
+          <MotionDiv
             key={category.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
+            transition={{ duration: 0.3, delay: 0.1 * index }}
+            whileHover={{ 
+              y: -5,
+              transition: { duration: 0.2 } 
+            }}
+            whileTap={{ scale: 0.95 }}
           >
             <CategoryCard
               icon={category.icon}
@@ -68,22 +93,43 @@ export const CategoriesPage: React.FC = () => {
               isSelected={selectedCategory === category.id}
               onClick={() => handleCategorySelect(category.id)}
             />
-          </motion.div>
+          </MotionDiv>
         ))}
-      </div>
+      </MotionDiv>
       
       {/* Category Info */}
-      <div className="mt-8 p-6 bg-gradient-to-r from-primary-50 to-primary-100/50 dark:from-primary-900/20 dark:to-primary-800/20 rounded-xl border border-primary-200/50 dark:border-primary-700/50">
+      <MotionDiv 
+        className="mt-8 p-6 bg-gradient-to-r from-primary-50 to-primary-100/50 dark:from-primary-900/20 dark:to-primary-800/20 rounded- border border-primary-200/50 dark:border-primary-700/50"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
+      >
         <div className="flex items-center gap-3 mb-3">
-          <Icon icon="lucide:info" className="text-primary-600 dark:text-primary-400" width={20} height={20} />
+          <MotionDiv
+            animate={{ 
+              scale: [1, 1.1, 1],
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          >
+            <Icon icon="lucide:info" className="text-primary-600 dark:text-primary-400" width={20} height={20} />
+          </MotionDiv>
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
             Browse by Category
           </h2>
         </div>
-        <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base">
+        <MotionP 
+          className="text-slate-600 dark:text-slate-400 text-sm md:text-base"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.6 }}
+        >
           Select any category above to view all available services and venues in that category. You can filter and sort results to find exactly what you're looking for.
-        </p>
-      </div>
+        </MotionP>
+      </MotionDiv>
     </div>
   );
 };

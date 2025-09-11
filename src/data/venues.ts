@@ -8,6 +8,9 @@ export interface Venue {
   rating: number;
   image: string;
   available: boolean;
+  distance?: number; // Distance in kilometers
+  isOpen?: boolean; // Opening status
+  openingHours?: string; // Opening hours
 }
 
 export interface VenueDetails extends Venue {
@@ -86,6 +89,9 @@ export const getHomePageVenues = (todayText: string, tomorrowText: string): Venu
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 0.5,
+    isOpen: true,
+    openingHours: '10:00 - 22:00 น.'
   },
   {
     id: '2',
@@ -97,6 +103,9 @@ export const getHomePageVenues = (todayText: string, tomorrowText: string): Venu
     rating: 4.5,
     image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 1.2,
+    isOpen: true,
+    openingHours: '09:00 - 20:00 น.'
   },
   {
     id: '3',
@@ -108,6 +117,9 @@ export const getHomePageVenues = (todayText: string, tomorrowText: string): Venu
     rating: 4.2,
     image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 2.3,
+    isOpen: false,
+    openingHours: '18:00 - 02:00 น.'
   },
   {
     id: '4',
@@ -119,6 +131,9 @@ export const getHomePageVenues = (todayText: string, tomorrowText: string): Venu
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 0.8,
+    isOpen: true,
+    openingHours: '07:00 - 21:00 น.'
   },
   {
     id: '5',
@@ -130,6 +145,9 @@ export const getHomePageVenues = (todayText: string, tomorrowText: string): Venu
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 3.1,
+    isOpen: true,
+    openingHours: '08:00 - 18:00 น.'
   },
   {
     id: '6',
@@ -141,6 +159,9 @@ export const getHomePageVenues = (todayText: string, tomorrowText: string): Venu
     rating: 4.6,
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 4.2,
+    isOpen: false,
+    openingHours: '06:00 - 22:00 น.'
   },
 ];
 
@@ -156,6 +177,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 0.5,
+    isOpen: true,
+    openingHours: '10:00 - 22:00 น.'
   },
   {
     id: '2',
@@ -167,6 +191,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.5,
     image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 1.2,
+    isOpen: true,
+    openingHours: '09:00 - 20:00 น.'
   },
   {
     id: '3',
@@ -178,6 +205,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.2,
     image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 2.3,
+    isOpen: false,
+    openingHours: '18:00 - 02:00 น.'
   },
   {
     id: '4',
@@ -189,6 +219,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 0.8,
+    isOpen: true,
+    openingHours: '07:00 - 21:00 น.'
   },
   {
     id: '5',
@@ -200,6 +233,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 3.1,
+    isOpen: true,
+    openingHours: '08:00 - 18:00 น.'
   },
   {
     id: '6',
@@ -211,6 +247,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.6,
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 4.2,
+    isOpen: false,
+    openingHours: '06:00 - 22:00 น.'
   },
   {
     id: '7',
@@ -222,6 +261,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.4,
     image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 2.1,
+    isOpen: true,
+    openingHours: '12:00 - 01:00 น.'
   },
   {
     id: '8',
@@ -233,6 +275,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.8,
     image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 5.7,
+    isOpen: true,
+    openingHours: '10:00 - 22:00 น.'
   },
   {
     id: '9',
@@ -244,6 +289,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.3,
     image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 6.3,
+    isOpen: true,
+    openingHours: '06:00 - 20:00 น.'
   },
   {
     id: '10',
@@ -255,6 +303,9 @@ export const searchResultsVenues: Venue[] = [
     rating: 4.7,
     image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=600&h=400&fit=crop&auto=format',
     available: true,
+    distance: 7.8,
+    isOpen: false,
+    openingHours: '11:00 - 23:00 น.'
   },
 ];
 
@@ -270,12 +321,14 @@ export const getVenueDetails = (id: string): VenueDetails => {
     price: 0,
     available: true,
     image: '',
+    distance: Math.floor(Math.random() * 10) + 1,
+    isOpen: Math.random() > 0.5,
+    openingHours: '10:00 - 22:00 น. ทุกวัน',
     images: [
       'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=500&fit=crop&auto=format',
       'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=500&fit=crop&auto=format',
       'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&h=500&fit=crop&auto=format',
     ],
-    openingHours: '10:00 - 22:00 น. ทุกวัน',
     contactInfo: {
       phone: '02-123-4567',
       email: 'contact@venue.com',

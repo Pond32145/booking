@@ -2,18 +2,21 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export const usePageRefresh = () => {
-  const [pageKey, setPageKey] = useState(0);
   const location = useLocation();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
-    // Track navigation changes and force refresh
-    const handleNavigation = () => {
-      setPageKey(prev => prev + 1);
-    };
+    // Set initial load to false after the first render
+    if (isInitialLoad) {
+      const timer = setTimeout(() => {
+        setIsInitialLoad(false);
+      }, 100); // Small delay to ensure initial render
+      
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, location.search, isInitialLoad]);
 
-    // Force refresh on location change
-    handleNavigation();
-  }, [location.pathname, location.search]);
-
-  return pageKey;
+  return { 
+    isInitialLoad
+  };
 };

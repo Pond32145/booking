@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Card, CardBody, CardHeader, CardFooter, Button, Divider, Chip, addToast } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/language-context';
 import { useAuth } from '../contexts/auth-context';
 import { LoginModal } from '../components/login-modal';

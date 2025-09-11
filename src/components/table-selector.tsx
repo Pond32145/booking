@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardBody, Chip } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
 import { TableInfo, getTableLocationLabel } from '../data/services';
 import { useLanguage } from '../contexts/language-context';
 
@@ -22,10 +21,8 @@ export const TableSelector: React.FC<TableSelectorProps> = ({
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {tables.map((table) => (
-          <motion.div
+          <div
             key={table.id}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
           >
             <Card 
               shadow="sm" 
@@ -68,7 +65,8 @@ export const TableSelector: React.FC<TableSelectorProps> = ({
                   <Icon 
                     icon={table.location === 'window' ? 'lucide:sun' : 
                          table.location === 'private' ? 'lucide:lock' :
-                         table.location === 'bar' ? 'lucide:wine' : 'lucide:users'} 
+                         table.location === 'bar' ? 'lucide:wine' :
+                         'lucide:users'} 
                     width={16} height={16} 
                     className="text-default-400" 
                   />
@@ -83,7 +81,7 @@ export const TableSelector: React.FC<TableSelectorProps> = ({
                 </div>
               </CardBody>
             </Card>
-          </motion.div>
+          </div>
         ))}
       </div>
       
