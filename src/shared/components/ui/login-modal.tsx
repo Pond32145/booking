@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Checkbox } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { useAuth } from '../contexts/auth-context';
-import { useLanguage } from '../contexts/language-context';
+import { useAuth } from '../../contexts/auth-context';
+import { useLanguage } from '../../contexts/language-context';
 
 interface LoginModalProps {
   isOpen: boolean;

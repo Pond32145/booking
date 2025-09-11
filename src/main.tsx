@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 import { HeroUIProvider, ToastProvider } from "@heroui/react"
 import { BrowserRouter as Router } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { AuthProvider } from './contexts/auth-context'
-import { LanguageProvider } from './contexts/language-context'
+import { AuthProvider } from './shared/contexts/auth-context'
+import { LanguageProvider } from './shared/contexts/language-context'
 import App from './App.tsx'
 import './index.css'
 

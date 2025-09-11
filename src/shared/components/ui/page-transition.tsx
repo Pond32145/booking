@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePageRefresh } from '../hooks/usePageRefresh';
+import { usePageRefresh } from '../../hooks/usePageRefresh';
 
 interface PageTransitionProps {
   children: React.ReactNode;

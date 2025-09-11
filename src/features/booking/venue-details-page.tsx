@@ -2,10 +2,14 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Tabs, Tab, Card, CardBody, CardHeader, Button, Chip } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { MotionDiv, MotionH1, MotionP, MotionImg, MotionH3 } from '../components/motion';
-import { useLanguage } from '../contexts/language-context';
-import { getVenueDetails } from '../data/venues';
-import { Skeleton, ServiceCardSkeleton } from '../components/skeleton';
+import { MotionDiv } from '../../shared/components/ui/MotionDiv';
+import { MotionH1 } from '../../shared/components/ui/MotionH1';
+import { MotionP } from '../../shared/components/ui/MotionP';
+import { MotionImg } from '../../shared/components/ui/MotionImg';
+import { MotionH3 } from '../../shared/components/ui/MotionH3';
+import { useLanguage } from '../../shared/contexts/language-context';
+import { getVenueDetails } from '../../shared/data/venues';
+import { Skeleton, ServiceCardSkeleton } from '../../shared/components/ui/skeleton';
 
 export const VenueDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

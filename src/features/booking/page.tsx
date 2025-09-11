@@ -2,14 +2,14 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Card, CardBody, CardHeader, CardFooter, Button, Divider, Chip, addToast } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { useLanguage } from '../contexts/language-context';
-import { useAuth } from '../contexts/auth-context';
-import { LoginModal } from '../components/login-modal';
-import { BookingTicket } from '../components/booking-ticket';
-import { TimeSlotSelector } from '../components/time-slot-selector';
-import { TableSelector } from '../components/table-selector';
-import { QueueSelector } from '../components/queue-selector';
-import { venueNamesMap } from '../data/venues';
+import { useLanguage } from '../../shared/contexts/language-context';
+import { useAuth } from '../../shared/contexts/auth-context';
+import { LoginModal } from '../../shared/components/ui/login-modal';
+import { BookingTicket } from '../../shared/components/ui/booking-ticket';
+import { TimeSlotSelector } from '../../shared/components/ui/time-slot-selector';
+import { TableSelector } from '../../shared/components/ui/table-selector';
+import { QueueSelector } from '../../shared/components/ui/queue-selector';
+import { venueNamesMap } from '../../shared/data/venues';
 import { 
   getServiceDetails, 
   generateTimeSlots, 
@@ -19,9 +19,9 @@ import {
   getQueueInfo, 
   getBookingTypeLabel,
   getTableLocationLabel 
-} from '../data/services';
-import { Skeleton, TimeSlotSkeleton } from '../components/skeleton';
-import { usePageRefresh } from '../hooks/usePageRefresh';
+} from '../../shared/data/services';
+import { Skeleton, TimeSlotSkeleton } from '../../shared/components/ui/skeleton';
+import { usePageRefresh } from '../../shared/hooks/usePageRefresh';
 
 export const ServiceBookingPage: React.FC = () => {
   const { venueId, serviceId } = useParams<{ venueId: string; serviceId: string }>();

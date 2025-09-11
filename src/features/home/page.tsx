@@ -2,17 +2,17 @@ import React from 'react';
 import { Tabs, Tab, Divider, addToast, Button } from "@heroui/react";
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
-import { SearchFilters } from '../components/search-filters';
-import { QuickFilterChips } from '../components/quick-filter-chips';
-import { CategoryCard } from '../components/category-card';
-import { BookingSlotCard } from '../components/booking-slot-card';
-import { CategorySkeleton, BookingSlotCardSkeleton } from '../components/skeleton';
-import { SEOHead } from '../components/seo-head';
-import { useLanguage } from '../contexts/language-context';
+import { SearchFilters } from '../../shared/components/ui/search-filters';
+import { QuickFilterChips } from '../../shared/components/ui/quick-filter-chips';
+import { CategoryCard } from '../../shared/components/ui/category-card';
+import { BookingSlotCard } from '../../shared/components/ui/booking-slot-card';
+import { CategorySkeleton, BookingSlotCardSkeleton } from '../../shared/components/ui/skeleton';
+import { SEOHead } from '../../shared/components/seo/seo-head';
+import { useLanguage } from '../../shared/contexts/language-context';
 import { useHistory } from 'react-router-dom';
-import { getCategories } from '../data/categories';
-import { getHomePageVenues } from '../data/venues';
-import { seoData } from '../data/seo-data';
+import { getCategories } from '../../shared/data/categories';
+import { getHomePageVenues } from '../../shared/data/venues';
+import { seoData } from '../../shared/data/seo-data';
 
 export const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState('restaurant');

@@ -2,13 +2,15 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Input, Button, Tabs, Tab, Pagination, Chip, Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Skeleton } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { MotionDiv, MotionH1, MotionP } from '../components/motion';
-import { BookingSlotCard } from '../components/booking-slot-card';
-import { BookingSlotCardSkeleton } from '../components/skeleton';
-import { SearchFilters } from '../components/search-filters';
-import { useLanguage } from '../contexts/language-context';
-import { searchResultsVenues } from '../data/venues';
-import { filterOptions, sortOptions } from '../data/filters';
+import { MotionDiv } from '../../shared/components/ui/MotionDiv';
+import { MotionH1 } from '../../shared/components/ui/MotionH1';
+import { MotionP } from '../../shared/components/ui/MotionP';
+import { BookingSlotCard } from '../../shared/components/ui/booking-slot-card';
+import { BookingSlotCardSkeleton } from '../../shared/components/ui/skeleton';
+import { SearchFilters } from '../../shared/components/ui/search-filters';
+import { useLanguage } from '../../shared/contexts/language-context';
+import { searchResultsVenues } from '../../shared/data/venues';
+import { filterOptions, sortOptions } from '../../shared/data/filters';
 
 export const SearchResultsPage: React.FC = () => {
   const location = useLocation();
@@ -143,13 +145,14 @@ export const SearchResultsPage: React.FC = () => {
     const results = [...filteredResults];
     
     switch (sortBy) {
-      case 'distance':
-        // Sort by distance (closest first)
-        return results.sort((a, b) => {
-          const distanceA = a.distance || 0;
-          const distanceB = b.distance || 0;
-          return distanceA - distanceB;
-        });
+      case 'price_low':
+        return results.sort((a, b) => a.price - b.price);
+      case 'price_high':
+        return results.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return results.sort((a, b) => b.rating - a.rating);
+      case 'name':
+        return results.sort((a, b) => a.name.localeCompare(b.name));
       case 'recommended':
       default:
         // Sort by a combination of rating and popularity
@@ -185,7 +188,7 @@ export const SearchResultsPage: React.FC = () => {
       <SearchFilters 
         onSearch={handleSearch} 
         onFilterChange={handleFilterChange}
-        placeholder="Search venues, services..."
+        // placeholder="Search venues, services..."
         className="mb-3"
       />
       

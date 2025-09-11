@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardBody, Chip } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { TableInfo, getTableLocationLabel } from '../data/services';
-import { useLanguage } from '../contexts/language-context';
+import { TableInfo, getTableLocationLabel } from '../../data/services';
+import { useLanguage } from '../../contexts/language-context';
 
 interface TableSelectorProps {
   tables: TableInfo[];

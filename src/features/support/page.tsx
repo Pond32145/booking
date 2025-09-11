@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Input, Textarea, Button, Accordion, AccordionItem, addToast } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { useLanguage } from '../contexts/language-context';
+import { useLanguage } from '../../shared/contexts/language-context';
 
 export const SupportPage: React.FC = () => {
   const history = useHistory();

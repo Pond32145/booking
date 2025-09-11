@@ -2,10 +2,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { MotionDiv, MotionH1, MotionP } from '../components/motion';
-import { CategoryCard } from '../components/category-card';
-import { useLanguage } from '../contexts/language-context';
-import { getCategories } from '../data/categories';
+import { MotionDiv } from '../../shared/components/ui/MotionDiv';
+import { MotionH1 } from '../../shared/components/ui/MotionH1';
+import { MotionP } from '../../shared/components/ui/MotionP';
+import { CategoryCard } from '../../shared/components/ui/category-card';
+import { useLanguage } from '../../shared/contexts/language-context';
+import { getCategories } from '../../shared/data/categories';
 
 export const CategoriesPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState('');
@@ -57,14 +59,14 @@ export const CategoriesPage: React.FC = () => {
           >
             {t.categories}
           </MotionH1>
-          <MotionP 
+          {/* <MotionP 
             className="text-slate-600 dark:text-slate-400 text-sm md:text-base"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             Choose a category to explore available services
-          </MotionP>
+          </MotionP> */}
         </div>
       </MotionDiv>
 
@@ -115,7 +117,7 @@ export const CategoriesPage: React.FC = () => {
               repeatType: "reverse"
             }}
           >
-            <Icon icon="lucide:info" className="text-primary-600 dark:text-primary-400" width={20} height={20} />
+            <Icon icon="lucide:info" className="text-primary-600 dark:text-primary-400" width="20" height="20" />
           </MotionDiv>
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
             Browse by Category

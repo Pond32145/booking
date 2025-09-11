@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardBody, Button, Chip, Divider } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { MotionDiv } from '../components/motion';
-import { useAuth } from '../contexts/auth-context';
+import { MotionDiv } from './MotionDiv';
+import { useAuth } from '../../contexts/auth-context';
 import { LoginModal } from './login-modal';
-import { useLanguage } from '../contexts/language-context';
+import { useLanguage } from '../../contexts/language-context';
 
 interface BookingSlotProps {
   id: string;
@@ -103,8 +103,10 @@ export const BookingSlotCard: React.FC<BookingSlotProps> = ({
                   </MotionDiv>
                   <div className="  items-center  gap-1 text-default-600 dark:text-default-400">
                     <div className='flex items-center gap-1 mt-1'>
-                      <Icon icon="lucide:map-pin" width={14} height={14} />
-                      <span className="text-xs"> {displayDistance} กม.</span>
+                      <span className="text-xs absolute bottom-3 right-2  px-2 py-1 rounded flex items-center gap-1">
+                        <Icon icon="lucide:map-pin" width={14} height={14} />
+                        {displayDistance} กม.
+                      </span>
                     </div>
                   </div>
                 </div>

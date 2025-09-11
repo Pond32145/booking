@@ -1,16 +1,17 @@
-import { HomePage } from './pages/home';
-import { MyBookingsPage } from './pages/my-bookings';
-import { ProfilePage } from './pages/profile';
-import { SupportPage } from './pages/support';
-import { VenueDetailsPage } from './pages/venue-details';
-import { ServiceBookingPage } from './pages/service-booking';
-import { SearchResultsPage } from './pages/search-results';
-import { CategoriesPage } from './pages/categories';
+import { HomePage } from './features/home/page';
+import { MyBookingsPage } from './features/booking/my-bookings-page';
+import { ProfilePage } from './features/profile/page';
+import { SupportPage } from './features/support/page';
+import { VenueDetailsPage } from './features/booking/venue-details-page';
+import { ServiceBookingPage } from './features/booking/page';
+import { SearchResultsPage } from './features/search/page';
+import { CategoriesPage } from './features/categories/page';
 
 export interface RouteConfig {
   path: string;
   exact?: boolean;
   component: React.ComponentType;
+  protected?: boolean;
 }
 
 export const routes: RouteConfig[] = [
@@ -30,6 +31,7 @@ export const routes: RouteConfig[] = [
   {
     path: '/profile',
     component: ProfilePage,
+    protected: true,
   },
   {
     path: '/support',

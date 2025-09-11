@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from "@heroui/react";
-import { TimeSlot } from '../data/services';
-import { useLanguage } from '../contexts/language-context';
+import { TimeSlot } from '../../data/services';
+import { useLanguage } from '../../contexts/language-context';
 
 interface TimeSlotSelectorProps {
   timeSlots: TimeSlot[];

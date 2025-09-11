@@ -2,10 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Tabs, Tab, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Pagination, useDisclosure, addToast } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { BookingHistoryCard } from '../components/booking-history-card';
-import { BookingCardSkeleton } from '../components/skeleton';
-import { useLanguage } from '../contexts/language-context';
-import { getUpcomingBookings, getPastBookings, cancelBooking } from '../data/bookings';
+import { BookingHistoryCard } from '../../shared/components/ui/booking-history-card';
+import { BookingCardSkeleton } from '../../shared/components/ui/skeleton';
+import { useLanguage } from '../../shared/contexts/language-context';
+import { getUpcomingBookings, getPastBookings, cancelBooking } from '../../shared/data/bookings';
 
 export const MyBookingsPage: React.FC = () => {
   const history = useHistory();

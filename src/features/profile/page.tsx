@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, CardBody, Avatar, Input, Switch, Button, Divider, Tabs, Tab, addToast } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { useLanguage } from '../contexts/language-context';
+import { useLanguage } from '../../shared/contexts/language-context';
 
 export const ProfilePage: React.FC = () => {
   const history = useHistory();

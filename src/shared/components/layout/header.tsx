@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@heroui/react";
 import { Link as RouterLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import { ThemeToggle } from './theme-toggle';
-import { useAuth } from '../contexts/auth-context';
-import { LoginModal } from './login-modal';
-import { useLanguage } from '../contexts/language-context';
+import { ThemeToggle } from '../ui/theme-toggle';
+import { useAuth } from '../../contexts/auth-context';
+import { LoginModal } from '../ui/login-modal';
+import { useLanguage } from '../../contexts/language-context';
 
 export const Header: React.FC = () => {
   const location = useLocation();

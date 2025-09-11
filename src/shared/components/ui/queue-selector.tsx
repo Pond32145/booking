@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chip } from "@heroui/react";
 import { Icon } from '@iconify/react';
-import { useLanguage } from '../contexts/language-context';
+import { useLanguage } from '../../contexts/language-context';
 
 type QueueInfo = {
   currentQueue: number;
