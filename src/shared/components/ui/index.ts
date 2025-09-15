@@ -6,5 +6,6 @@ import { MotionP } from './MotionP.tsx';
 import { MotionImg } from './MotionImg.tsx';
 import { StaggeredContainer } from './StaggeredContainer.tsx';
 import { PageTransition } from './PageTransition.tsx';
+import { BookingTicket } from './booking-ticket.tsx';
 
-export { MotionDiv, MotionH1, MotionH3, MotionP, MotionImg, StaggeredContainer, PageTransition };
+export { MotionDiv, MotionH1, MotionH3, MotionP, MotionImg, StaggeredContainer, PageTransition, BookingTicket };

@@ -35,28 +35,49 @@ export const ServiceBookingPage: React.FC = () => {
   const [showTicket, setShowTicket] = React.useState(false);
   const [bookingId, setBookingId] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
+  const [service, setService] = React.useState<any>(null);
+  const [timeSlots, setTimeSlots] = React.useState<TimeSlot[]>([]);
+  const [tables, setTables] = React.useState<TableInfo[]>([]);
+  const [queueInfo, setQueueInfo] = React.useState<any>(null);
   
   // Force component refresh on navigation
   const componentKey = `${venueId}-${serviceId}-${pageKey}`;
   
-  // Simulate loading
+  // Load service details
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        const serviceData = await getServiceDetails(serviceId!);
+        setService(serviceData);
+        
+        // Load additional data based on booking type
+        if (serviceData.bookingType === 'time_slot') {
+          setTimeSlots(generateTimeSlots());
+        } else if (serviceData.bookingType === 'table_booking') {
+          const tableData = await getAllTables(serviceId!);
+          setTables(tableData);
+        } else if (serviceData.bookingType === 'queue_only') {
+          const queueData = await getQueueInfo(serviceId!);
+          setQueueInfo(queueData);
+        }
+      } catch (error) {
+        console.error('Failed to load service data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    if (serviceId) {
+      loadData();
+    }
+  }, [serviceId]);
   
   // Mock data
   const venueName = venueNamesMap[venueId!] || 'ร้านอาหารเมือง';
-  const service = getServiceDetails(serviceId!);
-  
-  const timeSlots = generateTimeSlots();
-  const tables = getAllTables(serviceId!);
-  const queueInfo = getQueueInfo(serviceId!);
   
   // Get the appropriate selection label based on booking type
-  const selectionLabel = getBookingTypeLabel(service.bookingType);
+  const selectionLabel = service ? getBookingTypeLabel(service.bookingType) : '';
   
   const handleConfirmBooking = () => {
     if (!isAuthenticated) {
@@ -65,7 +86,7 @@ export const ServiceBookingPage: React.FC = () => {
     }
     
     // Check validation based on booking type
-    if (service.bookingType === 'time_slot' && !selectedTimeSlot) {
+    if (service?.bookingType === 'time_slot' && !selectedTimeSlot) {
       addToast({
         title: "กรุณาเลือกเวลา",
         description: "โปรดเลือกเวลาที่ต้องการจอง",
@@ -74,7 +95,7 @@ export const ServiceBookingPage: React.FC = () => {
       return;
     }
     
-    if (service.bookingType === 'table_booking' && !selectedTable) {
+    if (service?.bookingType === 'table_booking' && !selectedTable) {
       addToast({
         title: "กรุณาเลือกโต๊ะ",
         description: "โปรดเลือกโต๊ะที่ต้องการจอง",
@@ -100,13 +121,13 @@ export const ServiceBookingPage: React.FC = () => {
   
   // Helper function to get display time/table based on booking type
   const getSelectedDisplayValue = () => {
-    if (service.bookingType === 'time_slot' && selectedTimeSlot) {
+    if (service?.bookingType === 'time_slot' && selectedTimeSlot) {
       return timeSlots.find(slot => slot.id === selectedTimeSlot)?.time || '';
     }
-    if (service.bookingType === 'table_booking' && selectedTable) {
+    if (service?.bookingType === 'table_booking' && selectedTable) {
       return tables.find(table => table.id === selectedTable)?.name || '';
     }
-    if (service.bookingType === 'queue_only') {
+    if (service?.bookingType === 'queue_only') {
       return 'เข้าคิวเลย';
     }
     return '';
@@ -125,10 +146,10 @@ export const ServiceBookingPage: React.FC = () => {
         <BookingTicket
           bookingId={bookingId}
           venueName={venueName}
-          serviceName={service.name}
+          serviceName={service?.name || ''}
           date={new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' })}
           time={getSelectedDisplayValue()}
-          price={service.price}
+          price={service?.price || 0}
           onClose={handleCloseTicket}
         />
       </div>
@@ -137,7 +158,7 @@ export const ServiceBookingPage: React.FC = () => {
   
   return (
     <div key={componentKey} className="pb-20 md:pb-0">
-      {isLoading ? (
+      {isLoading || !service ? (
         // Skeleton loading for service booking
         <>
           <div className="mb-6">

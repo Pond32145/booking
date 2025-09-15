@@ -29,20 +29,32 @@ export const HomePage: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const categories = getCategories({
-    restaurant: t.restaurant,
-    salon: t.salon,
-    hotel: t.hotel,
-    pet: t.pet,
-    karaoke: t.karaoke,
-    gym: t.gym,
-    bar: t.bar,
-    spa: t.spa,
-    fast_food: t.fast_food,
-    clinic: t.clinic
-  });
+  const [categories, setCategories] = React.useState<any[]>([]);
+  const [bookingSlots, setBookingSlots] = React.useState<any[]>([]);
 
-  const bookingSlots = getHomePageVenues(t.today, t.tomorrow);
+  // Fetch categories and venues
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const fetchedCategories = await getCategories({
+        restaurant: t.restaurant,
+        salon: t.salon,
+        hotel: t.hotel,
+        pet: t.pet,
+        karaoke: t.karaoke,
+        gym: t.gym,
+        bar: t.bar,
+        spa: t.spa,
+        fast_food: t.fast_food,
+        clinic: t.clinic
+      });
+      setCategories(fetchedCategories);
+      
+      const fetchedSlots = await getHomePageVenues(t.today, t.tomorrow);
+      setBookingSlots(fetchedSlots);
+    };
+    
+    fetchData();
+  }, [t]);
 
   const handleSearch = (query: string) => {
     history.push(`/search?q=${encodeURIComponent(query)}`);
@@ -213,7 +225,7 @@ export const HomePage: React.FC = () => {
 
           {/* Categories with skeleton loading - Show only first 6 */}
           <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 md:gap-4">
-            {isLoading ? (
+            {isLoading || categories.length === 0 ? (
               Array.from({ length: 6 }).map((_, index) => (
                 <CategorySkeleton key={index} />
               ))
@@ -250,7 +262,7 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-4">
-            {isLoading ? (
+            {isLoading || bookingSlots.length === 0 ? (
               Array.from({ length: 4 }).map((_, index) => (
                 <div key={index} className="w-full">
                   <BookingSlotCardSkeleton />

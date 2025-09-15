@@ -9,7 +9,7 @@ import { BookingSlotCard } from '../../shared/components/ui/booking-slot-card';
 import { BookingSlotCardSkeleton } from '../../shared/components/ui/skeleton';
 import { SearchFilters } from '../../shared/components/ui/search-filters';
 import { useLanguage } from '../../shared/contexts/language-context';
-import { searchResultsVenues } from '../../shared/data/venues';
+import { getSearchResultsVenues } from '../../shared/data/venues';
 import { filterOptions, sortOptions } from '../../shared/data/filters';
 
 export const SearchResultsPage: React.FC = () => {
@@ -21,6 +21,7 @@ export const SearchResultsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchResults, setSearchResults] = React.useState<any[]>([]);
   
   // Parse URL parameters
   React.useEffect(() => {
@@ -44,6 +45,25 @@ export const SearchResultsPage: React.FC = () => {
       setIsLoading(false);
     }, 800);
     return () => clearTimeout(timer);
+  }, []);
+  
+  // Fetch search results
+  React.useEffect(() => {
+    const fetchResults = async () => {
+      setIsLoading(true);
+      try {
+        const results = await getSearchResultsVenues();
+        // In a real app, we would filter these results based on the search query
+        // For now, we'll just use all venues as search results
+        setSearchResults(results);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchResults();
   }, []);
   
   const handleSearch = (newQuery: string) => {
@@ -93,7 +113,7 @@ export const SearchResultsPage: React.FC = () => {
   
   // Enhanced filtering logic
   const filteredResults = React.useMemo(() => {
-    let results = searchResultsVenues;
+    let results = searchResults; // Use the state variable instead of undefined searchResultsVenues
     
     // Text search filtering
     if (searchQuery.trim()) {
@@ -138,7 +158,7 @@ export const SearchResultsPage: React.FC = () => {
     }
     
     return results;
-  }, [searchResultsVenues, searchQuery, activeFilters]);
+  }, [searchResults, searchQuery, activeFilters]); // Add searchResults to dependency array
   
   // Enhanced sorting logic
   const sortedResults = React.useMemo(() => {

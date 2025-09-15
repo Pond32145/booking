@@ -24,7 +24,18 @@ export const BookingTicket: React.FC<BookingTicketProps> = ({
   qrCode = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BookingConfirmed",
   onClose
 }) => {
-  const { t } = useLanguage();
+  // Try to use the language context, but provide fallback if not available
+  const languageContext = useLanguage();
+  const { t } = languageContext || { t: {
+    bookingConfirmed: 'การจองยืนยันแล้ว',
+    date: 'วันที่',
+    time: 'เวลา',
+    total: 'รวม',
+    bookingId: 'รหัสการจอง',
+    scanQrCode: 'สแกน QR Code เพื่อยืนยันการเข้าใช้บริการ',
+    downloadTicket: 'ดาวน์โหลดตั๋ว',
+    done: 'เสร็จสิ้น'
+  }};
   
   return (
     <div className="max-w-md mx-auto">

@@ -28,7 +28,7 @@ export const VenueDetailsPage: React.FC = () => {
         await new Promise(resolve => setTimeout(resolve, 500));
         
         // Get venue details
-        const details = getVenueDetails(id);
+        const details = await getVenueDetails(id);
         setVenueDetails(details);
       } catch (err) {
         setError('Failed to load venue details');

@@ -13,8 +13,8 @@ export const MyBookingsPage: React.FC = () => {
   const [selectedBookingId, setSelectedBookingId] = React.useState<string | null>(null);
   const [cancelReason, setCancelReason] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState(true);
-  const [upcomingBookingsData, setUpcomingBookingsData] = React.useState([]);
-  const [pastBookingsData, setPastBookingsData] = React.useState([]);
+  const [upcomingBookingsData, setUpcomingBookingsData] = React.useState<any[]>([]);
+  const [pastBookingsData, setPastBookingsData] = React.useState<any[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const { t } = useLanguage();
   
@@ -28,10 +28,19 @@ export const MyBookingsPage: React.FC = () => {
   
   React.useEffect(() => {
     const fetchBookings = async () => {
-      const upcoming = await getUpcomingBookings();
-      const past = await getPastBookings();
-      setUpcomingBookingsData(upcoming);
-      setPastBookingsData(past);
+      try {
+        const upcoming = await getUpcomingBookings();
+        const past = await getPastBookings();
+        setUpcomingBookingsData(upcoming);
+        setPastBookingsData(past);
+      } catch (error) {
+        console.error('Failed to fetch bookings:', error);
+        addToast({
+          title: 'Error',
+          description: 'Failed to load bookings',
+          color: "danger",
+        });
+      }
     };
     fetchBookings();
   }, []);
@@ -51,15 +60,31 @@ export const MyBookingsPage: React.FC = () => {
   
   const confirmCancellation = async () => {
     if (selectedBookingId) {
-      await cancelBooking(selectedBookingId, cancelReason);
-      addToast({
-        title: t.bookingCanceled,
-        description: t.bookingCanceledSuccess,
-        color: "success",
-      });
-      onOpenChange();
-      setSelectedBookingId(null);
-      setCancelReason('');
+      try {
+        await cancelBooking(selectedBookingId, cancelReason);
+        addToast({
+          title: t.bookingCanceled,
+          description: t.bookingCanceledSuccess,
+          color: "success",
+        });
+        
+        // Refresh the bookings data
+        const upcoming = await getUpcomingBookings();
+        const past = await getPastBookings();
+        setUpcomingBookingsData(upcoming);
+        setPastBookingsData(past);
+      } catch (error) {
+        console.error('Failed to cancel booking:', error);
+        addToast({
+          title: 'Error',
+          description: 'Failed to cancel booking',
+          color: "danger",
+        });
+      } finally {
+        onOpenChange();
+        setSelectedBookingId(null);
+        setCancelReason('');
+      }
     }
   };
   
