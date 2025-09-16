@@ -9,8 +9,14 @@ import { BookingSlotCard } from '../../shared/components/ui/booking-slot-card';
 import { BookingSlotCardSkeleton } from '../../shared/components/ui/skeleton';
 import { SearchFilters } from '../../shared/components/ui/search-filters';
 import { useLanguage } from '../../shared/contexts/language-context';
-import { getSearchResultsVenues } from '../../shared/data/venues';
+import { getSearchResultsVenues, type Venue } from '../../shared/data/venues';
 import { filterOptions, sortOptions } from '../../shared/data/filters';
+
+// Define search history item type
+interface SearchHistoryItem {
+  query: string;
+  timestamp: number;
+}
 
 export const SearchResultsPage: React.FC = () => {
   const location = useLocation();
@@ -21,7 +27,32 @@ export const SearchResultsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [searchResults, setSearchResults] = React.useState<any[]>([]);
+  const [searchResults, setSearchResults] = React.useState<Venue[]>([]);
+  const [searchHistory, setSearchHistory] = React.useState<SearchHistoryItem[]>([]);
+  
+  // Load search history from localStorage on component mount
+  React.useEffect(() => {
+    const savedHistory = localStorage.getItem('searchHistory');
+    if (savedHistory) {
+      try {
+        setSearchHistory(JSON.parse(savedHistory));
+      } catch (e) {
+        console.error('Failed to parse search history', e);
+        setSearchHistory([]);
+      }
+    }
+  }, []);
+  
+  // Save search history to localStorage whenever it changes
+  React.useEffect(() => {
+    if (searchHistory.length > 0) {
+      try {
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+      } catch (e) {
+        console.error('Failed to save search history', e);
+      }
+    }
+  }, [searchHistory]);
   
   // Parse URL parameters
   React.useEffect(() => {
@@ -31,6 +62,11 @@ export const SearchResultsPage: React.FC = () => {
     const filterParams = urlParams.getAll('filter');
     
     setSearchQuery(query);
+    
+    // Add to search history if there's a query
+    if (query) {
+      addToSearchHistory(query);
+    }
     
     // Set active filters based on URL parameters
     const filters: string[] = [];
@@ -66,8 +102,49 @@ export const SearchResultsPage: React.FC = () => {
     fetchResults();
   }, []);
   
+  // Add search query to history
+  const addToSearchHistory = (query: string) => {
+    if (!query.trim()) return;
+    
+    const newHistoryItem: SearchHistoryItem = {
+      query: query.trim(),
+      timestamp: Date.now()
+    };
+    
+    setSearchHistory(prevHistory => {
+      // Remove duplicates
+      const filteredHistory = prevHistory.filter(item => item.query.toLowerCase() !== query.trim().toLowerCase());
+      // Add new item at the beginning
+      const newHistory = [newHistoryItem, ...filteredHistory];
+      // Keep only the last 10 items
+      return newHistory.slice(0, 10);
+    });
+  };
+  
+  // Clear search history
+  const clearSearchHistory = () => {
+    setSearchHistory([]);
+    try {
+      localStorage.removeItem('searchHistory');
+    } catch (e) {
+      console.error('Failed to clear search history', e);
+    }
+  };
+  
+  // Use a search history item
+  const useSearchHistoryItem = (query: string) => {
+    setSearchQuery(query);
+    addToSearchHistory(query);
+    // Update URL with the selected search query
+    const params = new URLSearchParams(location.search);
+    params.set('q', query);
+    history.push(`/search?${params.toString()}`);
+  };
+  
   const handleSearch = (newQuery: string) => {
     setSearchQuery(newQuery);
+    // Add to search history
+    addToSearchHistory(newQuery);
     // Update URL with new search query
     const params = new URLSearchParams(location.search);
     if (newQuery) {
@@ -188,6 +265,23 @@ export const SearchResultsPage: React.FC = () => {
   const handleSortChange = (newSort: string) => {
     setSortBy(newSort);
     updateURL(searchQuery, activeFilters, newSort);
+    // Reset to first page when sorting changes
+    setCurrentPage(1);
+  };
+  
+  // Pagination logic
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(sortedResults.length / itemsPerPage);
+  const paginatedResults = React.useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return sortedResults.slice(startIndex, startIndex + itemsPerPage);
+  }, [sortedResults, currentPage, itemsPerPage]);
+  
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of results
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
   return (
@@ -210,6 +304,9 @@ export const SearchResultsPage: React.FC = () => {
         onFilterChange={handleFilterChange}
         // placeholder="Search venues, services..."
         className="mb-3"
+        searchHistory={searchHistory}
+        onUseHistoryItem={useSearchHistoryItem}
+        onClearHistory={clearSearchHistory}
       />
       
       {/* Search Results Header */}
@@ -217,6 +314,14 @@ export const SearchResultsPage: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
+              <h2 className="text-xl font-bold">
+                {t.searchResults} ({sortedResults.length} {t.resultsFound})
+              </h2>
+              {searchQuery && (
+                <p className="text-default-500">
+                  {t.searchResults} "{searchQuery}"
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -342,7 +447,7 @@ export const SearchResultsPage: React.FC = () => {
               <BookingSlotCardSkeleton key={index} />
             ))
           ) : (
-            sortedResults.map((result) => (
+            paginatedResults.map((result) => (
               <div
                 key={result.id}
               >
@@ -357,10 +462,10 @@ export const SearchResultsPage: React.FC = () => {
         
         <div className="flex justify-center mt-8 mb-8">
           <Pagination
-            total={10}
+            total={totalPages || 1}
             initialPage={1}
             page={currentPage}
-            onChange={setCurrentPage}
+            onChange={handlePageChange}
             color="primary"
             showControls
             showShadow

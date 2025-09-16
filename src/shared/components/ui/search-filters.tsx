@@ -1,7 +1,12 @@
 import React from 'react';
-import { Input, Button } from "@heroui/react";
+import { Input, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import { Icon } from '@iconify/react';
 import { useLanguage } from '../../contexts/language-context';
+
+interface SearchHistoryItem {
+  query: string;
+  timestamp: number;
+}
 
 interface SearchFiltersProps {
   onSearch: (query: string) => void;
@@ -9,6 +14,9 @@ interface SearchFiltersProps {
   showQuickFilters?: boolean;
   placeholder?: string;
   className?: string;
+  searchHistory?: SearchHistoryItem[];
+  onUseHistoryItem?: (query: string) => void;
+  onClearHistory?: () => void;
 }
 
 export const SearchFilters: React.FC<SearchFiltersProps> = ({ 
@@ -16,7 +24,10 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   onFilterChange, 
   showQuickFilters = false,
   placeholder,
-  className = ""
+  className = "",
+  searchHistory = [],
+  onUseHistoryItem,
+  onClearHistory
 }) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const { t } = useLanguage();
@@ -37,6 +48,21 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
     }
   };
 
+  const handleUseHistoryItem = (query: string) => {
+    setSearchQuery(query);
+    if (onUseHistoryItem) {
+      onUseHistoryItem(query);
+    } else {
+      onSearch(query);
+    }
+  };
+
+  const handleClearHistory = () => {
+    if (onClearHistory) {
+      onClearHistory();
+    }
+  };
+
   return (
     <div className={`w-full md:w-1/2 items-center justify-center ${className}`}>
       <div className="relative">
@@ -52,16 +78,57 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
               </div>
             }
             endContent={
-              <Button
-                isIconOnly
-                size="md"
-                color="primary"
-                onPress={handleSearch}
-                className="bg-gradient-primary button-glow interactive-scale mr-0.5 md:mr-1"
-                radius="md"
-              >
-                <Icon icon="lucide:search" width={15} height={15} />
-              </Button>
+              <div className="flex items-center gap-1">
+                {searchHistory.length > 0 && (
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        variant="light"
+                        className="min-w-unit-8 w-8 h-8"
+                      >
+                        <Icon icon="lucide:history" width={16} height={16} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Search history"
+                      variant="flat"
+                      className="max-h-60 overflow-y-auto"
+                    >
+                      <>
+                        {searchHistory.map((item, index) => (
+                          <DropdownItem
+                            key={index}
+                            onPress={() => handleUseHistoryItem(item.query)}
+                            startContent={<Icon icon="lucide:clock" width={16} height={16} />}
+                          >
+                            {item.query}
+                          </DropdownItem>
+                        ))}
+                        <DropdownItem
+                          key="clear-history"
+                          onPress={handleClearHistory}
+                          startContent={<Icon icon="lucide:trash" width={16} height={16} />}
+                          className="text-danger"
+                        >
+                          {t.clearAll}
+                        </DropdownItem>
+                      </>
+                    </DropdownMenu>
+                  </Dropdown>
+                )}
+                <Button
+                  isIconOnly
+                  size="md"
+                  color="primary"
+                  onPress={handleSearch}
+                  className="bg-gradient-primary button-glow interactive-scale mr-0.5 md:mr-1"
+                  radius="md"
+                >
+                  <Icon icon="lucide:search" width={15} height={15} />
+                </Button>
+              </div>
             }
             className="w-full"
             radius="md"

@@ -80,7 +80,27 @@ const fetchFromJson = async <T>(filePath: string): Promise<ApiResponse<T>> => {
   try {
     // In a real app, this would be an actual API call
     // For now, we're importing the JSON data directly
-    const data = await import(`./json/${filePath}`);
+    let data;
+    switch (filePath) {
+      case 'upcoming-bookings.json':
+        data = await import('./json/upcoming-bookings.json');
+        break;
+      case 'past-bookings.json':
+        data = await import('./json/past-bookings.json');
+        break;
+      case 'services.json':
+        data = await import('./json/services.json');
+        break;
+      case 'venues.json':
+        data = await import('./json/venues.json');
+        break;
+      case 'categories.json':
+        data = await import('./json/categories.json');
+        break;
+      default:
+        throw new Error(`Unknown file path: ${filePath}`);
+    }
+    
     await delay(300); // Simulate network delay
     return {
       data: data.default,
