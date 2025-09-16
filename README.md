@@ -1,73 +1,71 @@
 # Booking System
 
-This is a modern booking system built with React, TypeScript, Tailwind CSS, and HeroUI components. The system provides a seamless experience for users to discover, search, and book various services across multiple categories.
+A modern booking system built with React, TypeScript, and Vite.
+
+## Features
+- Service discovery across multiple categories
+- Booking management
+- User profiles
+- Search and filtering capabilities
+- Responsive design with mobile support
+- Dark/light theme toggle
+- SEO optimization
+- Motion animations
 
 ## Getting Started
 
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
 ```bash
-# Install dependencies
 npm install
+```
 
-# Start development server
+### Development
+```bash
 npm run dev
+```
 
-# Build for production
+### Build
+```bash
 npm run build
 ```
 
-Note: If you encounter minification errors during build, ensure Terser is installed:
+### Preview Production Build
 ```bash
-npm install --save-dev terser
+npm run preview
 ```
+
+## Docker Deployment
+
+You can also run this application using Docker:
+
+### Using Dockerfile directly:
+```bash
+# Build the Docker image
+docker build -t booking-system .
+
+# Run the container
+docker run -p 3000:3000 booking-system
+```
+
+### Using Docker Compose:
+```bash
+# Build and run using docker-compose
+docker-compose up --build
+```
+
+The application will be available at http://localhost:3000
+
+## Project Structure
+- `src/features`: Feature-specific pages (booking, categories, home, profile, search, support)
+- `src/shared`: Reusable components, contexts, data, and hooks
+- `public`: Static assets
 
 ## Available Scripts
-
-- `npm run dev` - Start development server with HMR
-- `npm run build` - Build for production (using npx for Vite)
-- `npm run build:types` - Build with TypeScript type checking
-- `npm run build:fallback` - Fallback build using npx for tsc and Vite
-- `npm run build:direct` - Direct node execution of Vite build
-- `npm run fix:perms` - Fix common permission issues
-- `npm run lint` - Run ESLint
-- `npm run preview` - Preview production build locally
-
-## Troubleshooting Build Issues
-
-### Permission Denied Error
-
-If you encounter a "Permission denied" error when building:
-
-1. Try using the fallback build script:
-   ```bash
-   npm run build:fallback
-   ```
-
-2. Try direct node execution:
-   ```bash
-   npm run build:direct
-   ```
-
-3. Fix permissions manually:
-   ```bash
-   npm run fix:perms
-   ```
-
-4. For Vercel deployments, use the vercel-build.sh script
-
-### Deployment to Vercel
-
-For Vercel deployments, you can use the provided build script:
-
-```bash
-./vercel-build.sh
-```
-
-## Technology Stack
-
-- React 18
-- TypeScript
-- Vite 6
-- Tailwind CSS 4
-- HeroUI React Components
-- Framer Motion
-- React Router DOM
+- `dev`: Start development server
+- `build`: Build for production
+- `preview`: Preview production build locally
+- `lint`: Run ESLint
