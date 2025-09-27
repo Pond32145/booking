@@ -1,0 +1,12 @@
+[
+  { "id": "restaurant", "name": "ร้านอาหาร", "icon": "lucide:utensils" },
+  { "id": "salon", "name": "ซาลอน", "icon": "lucide:scissors" },
+  { "id": "hotel", "name": "โรงแรม", "icon": "lucide:hotel" },
+  { "id": "pet", "name": "สัตว์เลี้ยง", "icon": "lucide:paw-print" },
+  { "id": "karaoke", "name": "คาราโอเกะ", "icon": "lucide:mic" },
+  { "id": "gym", "name": "ฟิตเนส", "icon": "lucide:dumbbell" },
+  { "id": "bar", "name": "บาร์", "icon": "lucide:wine" },
+  { "id": "spa", "name": "สปา", "icon": "lucide:flower" },
+  { "id": "fast_food", "name": "อาหารจานด่วน", "icon": "lucide:coffee" },
+  { "id": "clinic", "name": "คลินิก", "icon": "lucide:stethoscope" }
+]
