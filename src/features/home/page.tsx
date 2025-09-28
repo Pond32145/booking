@@ -197,12 +197,12 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Quick Filter Chips */}
-        <div className="mt-4 md:mt-6">
-          <QuickFilterChips
-            onFilterSelect={handleQuickFilterSelect}
-            selectedFilter={selectedQuickFilter}
-          />
-        </div>
+          {/* <div className="mt-4 md:mt-6">
+            <QuickFilterChips
+              onFilterSelect={handleQuickFilterSelect}
+              selectedFilter={selectedQuickFilter}
+            />
+          </div> */}
 
         <div className="mt-8 md:mt-12">
           <div className="flex items-center justify-between mb-4 md:mb-6 px-1">

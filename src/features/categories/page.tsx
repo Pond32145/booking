@@ -7,25 +7,33 @@ import { MotionH1 } from '../../shared/components/ui/MotionH1';
 import { MotionP } from '../../shared/components/ui/MotionP';
 import { CategoryCard } from '../../shared/components/ui/category-card';
 import { useLanguage } from '../../shared/contexts/language-context';
-import { getCategories } from '../../shared/data/categories';
+import { Category, getCategories } from '../../shared/data/categories';
 
 export const CategoriesPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState('');
   const { t } = useLanguage();
   const history = useHistory();
   
-  const categories = getCategories({
-    restaurant: t.restaurant,
-    salon: t.salon,
-    hotel: t.hotel,
-    pet: t.pet,
-    karaoke: t.karaoke,
-    gym: t.gym,
-    bar: t.bar,
-    spa: t.spa,
-    fast_food: t.fast_food,
-    clinic: t.clinic
-  });
+const [categories, setCategories] = React.useState<Category[]>([]);
+
+React.useEffect(() => {
+  (async () => {
+    const data = await getCategories({
+      restaurant: t.restaurant,
+      salon: t.salon,
+      hotel: t.hotel,
+      pet: t.pet,
+      karaoke: t.karaoke,
+      gym: t.gym,
+      bar: t.bar,
+      spa: t.spa,
+      fast_food: t.fast_food,
+      clinic: t.clinic
+    });
+    setCategories(data);
+  })();
+}, [t]); // refetch เมื่อเปลี่ยนภาษา
+
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
