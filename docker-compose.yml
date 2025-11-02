@@ -1,12 +1,43 @@
 version: '3.8'
 
 services:
-  booking-system:
-    build: .
-    ports:
-      - "3000:3000"
+  postgres:
+    image: postgres:latest
+    container_name: booking-postgres
+    restart: always
     environment:
-      - NODE_ENV=production
+      POSTGRES_USER: booking
+      POSTGRES_PASSWORD: 4qMbHKGqe/2dCw==
+      POSTGRES_DB: booking_auth
+    ports:
+      - "5432:5432"
     volumes:
-      - ./dist:/app/dist
-    restart: unless-stopped
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+
+  auth-service:
+    build: 
+      context: ./auth-back
+      dockerfile: Dockerfile
+    container_name: booking-auth-service
+    restart: always
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: booking
+      DB_PASSWORD: 4qMbHKGqe/2dCw==
+      DB_NAME: booking_auth
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    networks:
+      - booking-network
+
+volumes:
+  postgres_data:
+
+networks:
+  booking-network:
+    driver: bridge
